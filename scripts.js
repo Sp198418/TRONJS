@@ -17,11 +17,14 @@ let player = {
     y: canvas.width/2 - 15
 
 }
+
+let trailState = {
+    x: null,
+    y: null
+}
+
 player.img = new Image();
 player.img.src = './assets/tronredbikeup.png'; //Bike image that will move 
-// Trail object
-
-
 
 // Checking for collision
 function has_game_ended()
@@ -63,6 +66,29 @@ document.onkeydown = keyDownHandler
 //if player x and y moves draw trail
 
 function trail() {
+    /* Check x & y of player - if dif than trailState -> create a new rect using trailState.x & y
+      then update trailState */
+      console.log('here we are')
+    if(trailState.x !== player.x || trailState.y !== player.y){
+        ctx.fillStyle = 'green';
+        ctx.fillRect(trailState.x, trailState.y, 5, 5);
+
+        // SAVING UNIQUE COORDINATE OF PLAYER
+        trailState[`${player.x} ${player.y}`] = [player.x, player.y];
+
+        // SAVING LAST PLAYER STATE
+        trailState.x = player.x;
+        trailState.y = player.y;
+    }
+    // DRAW EACH COORDINATE
+    for(coordinate in trailState){
+        if(trailState[coordinate] != "x" && trailState[coordinate] != "y"){
+            ctx.fillRect(trailState[coordinate][0], trailState[coordinate][1], 5, 5);
+        }
+    }
+}
+
+function checkTrailCollision(){
 
 }
 
@@ -114,22 +140,15 @@ function moveChar(){
 
 
 
-
-
 function draw(){
     ctx.clearRect(0, 0, canvas.width, canvas.height)
-   moveChar();
-   has_game_ended();
+    moveChar();
+    has_game_ended();
     drawChar();
-    
-    
-    
-
-  
-    
+    trail();
+    // ctx.fillStyle = 'green';
+    // ctx.fillRect(20, 20, 5, 5);
 }
 
 setInterval(draw, 30)
-
-
   
