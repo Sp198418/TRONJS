@@ -1,0 +1,25 @@
+body{
+    background-image:url('./assets/tron\ city.png') !important;  
+    background-size: cover !important;
+    background-size: 100%;
+}
+
+
+
+
+canvas{
+    background-image:url('./assets/trongrid.webp') !important; 
+    background-size: cover !important;
+    background-size: 100%;
+    border: 1px black solid;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    
+   
+    }
+
+    
