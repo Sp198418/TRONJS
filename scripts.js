@@ -14,8 +14,13 @@ let player = {
     height: 40,
     width: 40, 
     x: canvas.height/2 - 15, 
-    y: canvas.width/2 - 15
-
+    y: canvas.width/2 - 15,
+    midX: function(){
+        return this.x + 17.5;
+    },
+    bttmY: function(){
+        return this.y + 38;
+    }
 }
 
 let trailState = {
@@ -26,13 +31,12 @@ let trailState = {
 player.img = new Image();
 player.img.src = './assets/tronredbikeup.png'; //Bike image that will move 
 
-// Checking for collision
+// Checking for collision with walls
 function has_game_ended()
 
 {  
   for (let i = 4; i < player.length; i++)
   {    
-      console.log("checking...")
     let has_collided = player[i] === player[0] && player[i] === player[0]
     if (has_collided) 
       return alert('Gameover')
@@ -41,7 +45,7 @@ function has_game_ended()
   let hitRightWall = player.x >= canvas.width - 35;
   let hitToptWall = player.y <= 0;
   let hitBottomWall = player.y >= canvas.height - 35;
-    const onGameOver = () => {
+    let onGameOver = () => {
         alert('Game Over');
         player.x = canvas.height/2 - 15
         player.y = canvas.width/2 - 15
@@ -68,17 +72,16 @@ document.onkeydown = keyDownHandler
 function trail() {
     /* Check x & y of player - if dif than trailState -> create a new rect using trailState.x & y
       then update trailState */
-      console.log('here we are')
-    if(trailState.x !== player.x || trailState.y !== player.y){
-        ctx.fillStyle = 'green';
+    if(trailState.x !== player.midX() || trailState.y !== player.bttmY()){
+        ctx.fillStyle = 'limegreen';
         ctx.fillRect(trailState.x, trailState.y, 5, 5);
 
         // SAVING UNIQUE COORDINATE OF PLAYER
-        trailState[`${player.x} ${player.y}`] = [player.x, player.y];
+        trailState[`${player.midX()} ${player.bttmY()}`] = [player.midX(), player.bttmY()];
 
         // SAVING LAST PLAYER STATE
-        trailState.x = player.x;
-        trailState.y = player.y;
+        trailState.x = player.midX();
+        trailState.y = player.bttmY();
     }
     // DRAW EACH COORDINATE
     for(coordinate in trailState){
@@ -89,6 +92,41 @@ function trail() {
 }
 
 function checkTrailCollision(){
+ //Creating the variables for simplicity
+ let headX = player.midX();
+ let headY = player.y;
+
+ // If the current player coordinate matches a key (it looks like "x y") on trailState - end the game (because the player ran into the trail)
+ 
+ // Turned our current players coordinates into a string that might match a key on trailState
+ let strCoord = `${headX} ${headY}`;
+
+ // Then we can check to see if that exists within trailState
+ if(trailState[strCoord]){
+     return alert('Game Over');
+ }
+
+ /*if (headX == trailState[coordinate].x || headY == trailState[coordinate].y){
+     return alert ('Game Over');
+ } */
+
+ //The for loop starts from 1 because the head is index 0
+ //and you don't want to check if the head collides with itself
+ /* for (let i = 1; i < this.trailState.length; ++i) {
+     //Another variables for simplicity
+     let currentX = this.trailState[i].x;
+     let currentY = this.trailState[i].y;
+
+     if (headX === currentX && headY === currentY) {
+           
+         //The head collides with the current body part
+         return alert('Game Over');
+     }
+ } */
+ //If the function reaches here then 
+ //the head does not collide with any of the other parts
+ return false;
+    
 
 }
 
@@ -99,7 +137,11 @@ function keyDownHandler(t){
      upPressed = false;
      downPressed = false;
 
-    if(t.key == "Right" || t.key == "ArrowRight"){
+     function isConflict(){
+
+     }
+
+    if(t.key == "Right" || t.key == "ArrowRight" && isConflict()){
         rightPressed = true 
         player.orientation = 'right'
     } else if(t.key == "Left" || t.key == "ArrowLeft"){
@@ -124,16 +166,60 @@ function drawChar(){
     
 }
 
-function moveChar(){
 
+function change_direction(event) {
+    let LEFT_KEY = leftPressed;
+    let RIGHT_KEY = rightPressed;
+    let UP_KEY = upPressed;
+    let DOWN_KEY = downPressed;
+    
+    // Horizontal velocity
+    let dx = 10;
+    // Vertical velocity
+    let dy = 0;
+    
+    
+  // Prevent the rider from reversing
+  
+    if (changing_direction) return;
+    changing_direction = true;
+    let keyPressed = event;
+    let goingUp = dy === -10;
+    let goingDown = dy === 10;
+    let goingRight = dx === 10;
+    let goingLeft = dx === -10;
+    if (keyPressed === LEFT_KEY && !goingRight) {
+      dx = -10;
+      dy = 0;
+    }
+    if (keyPressed === UP_KEY && !goingDown) {
+      dx = 0;
+      dy = -10;
+    }
+    if (keyPressed === RIGHT_KEY && !goingLeft) {
+      dx = 10;
+      dy = 0;
+    }
+    if (keyPressed === DOWN_KEY && !goingUp) {
+      dx = 0;
+      dy = 10;
+    }
+  }
+
+let isCharMoving = false
+function moveChar(){
     if(rightPressed){
         player.x += 4;
+        isCharMoving= true;
     } else if(leftPressed){
         player.x -= 4;
+        isCharMoving = true;
     } else if(upPressed){
         player.y -= 4;
+        isCharMoving = true;
     } else if(downPressed){
         player.y += 4;
+        isCharMoving = true;
     }
 }
 
@@ -143,12 +229,13 @@ function moveChar(){
 function draw(){
     ctx.clearRect(0, 0, canvas.width, canvas.height)
     moveChar();
+    change_direction();
     has_game_ended();
     drawChar();
+    if(isCharMoving){
+        checkTrailCollision();
+    }
     trail();
-    // ctx.fillStyle = 'green';
-    // ctx.fillRect(20, 20, 5, 5);
 }
 
 setInterval(draw, 30)
-  
