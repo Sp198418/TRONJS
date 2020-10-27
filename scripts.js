@@ -114,7 +114,7 @@ function trail() {
       then update trailState1 */
 
     if(trailState1.x !== player1.midX1() || trailState1.y !== player1.bttmY1()){
-        ctx.fillStyle = 'lime green';
+        ctx.fillStyle = 'limegreen';
         // ctx.fillRect(trailState1.x, trailState1.y - 20, 5, 5);
 
         // SAVING UNIQUE COORDINATE OF PLAYER
@@ -166,19 +166,27 @@ function checkTrailCollision(){
  let strCoord2 = `${headX2} ${headY2}`;
 
  if(trailState1[strCoord1]){
-    return alert('Player 1 Lost!');
+    alert('Player 1 Lost!');
+    window.location.reload(true);
+    return
  }
 
  if(trailState1[strCoord2]){
-    return alert('Player 2 Lost!');
+    alert('Player 2 Lost!');
+    window.location.reload(true);
+    return
  }
 
  if(trailState2[strCoord1]){
-    return alert('Player 1 Lost!');
+    alert('Player 1 Lost!');
+    window.location.reload(true);
+    return
  }
 
  if (trailState2[strCoord2]){
-    return alert('Player 2 Lost!')
+    alert('Player 2 Lost!')
+    window.location.reload(true);
+    return
  }
 
 
@@ -278,7 +286,7 @@ function moveChar2(){
         isCharMoving2 = true;
     } 
 }
-
+// Clears the canvas at the start of each frame in an animation
 function clearBoard(){
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 }
