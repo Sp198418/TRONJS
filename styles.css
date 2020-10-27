@@ -18,8 +18,17 @@ canvas{
     left: 0;
     right: 0;
     margin: auto;
-    
-   
-    }
+}
+
+    #startGame{
+    background-size: cover;
+    background-position: center;
+    padding: 20px;
+    height:600px;  
+    width:800px;   
+    position: absolute;  
+    top:160px;  
+    left:25%; 
+}
 
     
