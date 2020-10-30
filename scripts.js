@@ -1,18 +1,19 @@
+// Game wrap with click function
+
 document.getElementById('startGame').addEventListener('click',function startGame(){
 
 
     //Removes image after click 
-    var parent = document.getElementById('Parent')
-    var child = document.getElementById('startGame')
+    let parent = document.getElementById('Parent')
+    let child = document.getElementById('startGame')
     parent.removeChild(child)
     
 
 
 let canvas = document.getElementById("Retro");
 let ctx = canvas.getContext("2d");
-// setting our x & y direction
-let dx = 1;
-let dy = 1;
+// pause variable
+
 let pause = false;
 // define a char/bikerider
 let player1 = { 
@@ -65,7 +66,7 @@ function has_game_ended(){
   let hitRightWall = player1.x >= canvas.width - 35;
   let hitToptWall = player1.y <= 0;
   let hitBottomWall = player1.y >= canvas.height - 35;
-
+// checking player 2 wall collision
   let hitLeftWall2 = player2.x < 0;  
   let hitRightWall2 = player2.x >= canvas.width - 35;
   let hitToptWall2 = player2.y <= 0;
@@ -99,9 +100,6 @@ function has_game_ended(){
 
 // letting page know the buttons ARENT being pressed1 yet
 let leftPressed2, rightPressed1, downPressed1, upPressed1, upPressed2, downPressed2 = false
-
-
-// collision
 let rightPressed2 = true;
 let leftPressed1 = true;
 
@@ -115,7 +113,7 @@ function trail() {
 
     if(trailState1.x !== player1.midX1() || trailState1.y !== player1.bttmY1()){
         ctx.fillStyle = 'limegreen';
-        // ctx.fillRect(trailState1.x, trailState1.y - 20, 5, 5);
+        
 
         // SAVING UNIQUE COORDINATE OF PLAYER
         trailState1[`${player1.midX1()} ${player1.bttmY1()}`] = [player1.midX1(), player1.bttmY1()];
@@ -133,12 +131,12 @@ function trail() {
 
     if(trailState2.x !== player2.midX2() || trailState2.y !== player2.bttmY2()){
         ctx.fillStyle = 'red';
-        // ctx.fillRect(trailState2.x, trailState2.y - 20, 5, 5);
+        
 
-        // SAVING UNIQUE COORDINATE OF PLAYER
+        // SAVING UNIQUE COORDINATE OF PLAYER2
         trailState2[`${player2.midX2()} ${player2.bttmY2()}`] = [player2.midX2(), player2.bttmY2()];
 
-        // SAVING LAST PLAYER STATE
+        // SAVING LAST PLAYER2 STATE
         trailState2.x = player2.midX2();
         trailState2.y = player2.bttmY2();
     }
@@ -222,7 +220,7 @@ function keyDownHandler(t){
     }
 
     player1.img.src = `./assets/tronredbike${player1.orientation}.png`
-
+// player 2 key downhandler
     if( t.key == "d" && !leftPressed2){
         rightPressed2 = true;
         downPressed2 = false;

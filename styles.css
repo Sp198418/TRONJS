@@ -4,9 +4,6 @@ body{
     background-size: 100%;
 }
 
-
-
-
 canvas{
     background-image:url('./assets/trongrid.webp') !important; 
     background-size: cover !important;
@@ -21,14 +18,19 @@ canvas{
 }
 
     #startGame{
-    background-size: cover;
+    background-image: url('./assets/buttonLandpage.png');
+    background-size: contain;
     background-position: center;
     padding: 20px;
     height:600px;  
     width:800px;   
     position: absolute;  
-    top:135px;  
-    left:25%; 
+    left:0; 
+    right: 0;
+    top:50%;
+    transform: translateY(-50%);
+    margin-left: auto;
+    margin-right: auto;
     
 }
 
