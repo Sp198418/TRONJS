@@ -84,17 +84,18 @@ function has_game_ended(){
         upPressed1 = false;
         downPressed1 = false;
         clearBoard();
+        
     }
 
 
     if(hitLeftWall2 || hitRightWall2 || hitToptWall2 || hitBottomWall2){
-        alert("Player 2 lost")
-        resetGame();
+        alert("Player 2 lost");
+        window.location.reload(true);
     }
 
     if(hitLeftWall || hitRightWall || hitToptWall || hitBottomWall){
         alert("Player 1 lost")
-        resetGame();
+        window.location.reload(true);
     }
 }
 
@@ -304,4 +305,4 @@ function draw(){
 
 setInterval(draw, 30)
 })
-startGame();
+// startGame();
